@@ -74,7 +74,7 @@ def upload():
 
         # upload works
         print 'mime type!!!' + file.mimetype
-        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': 'graph', 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
+        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': file_name.replace(app.config['UPLOAD_FOLDER'], ""), 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
         file1.Upload()
         file1.SetContentFile(os.path.join(file_name))
         file1.Upload()
