@@ -38,6 +38,7 @@ def upload():
     print 'yo'
     # Get the name of the uploaded file
     file = request.files['file']
+    redirectUrl = request.POST['redirectUrl']
     print file
     ## THIS IS WHERE RICHARD'S CODE GOES
 
@@ -64,6 +65,7 @@ def upload():
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
+        return redirect(redirectUrl)
 
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload

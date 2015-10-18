@@ -43,7 +43,9 @@
   </head>
   <body>
     <div id="drop_zone2"><p style="padding-left: 30%;padding-top: 25%;">Click to upload files.</p></div>
-    <input style='display:none' type='file' id='files' name='files[]' multiple />
+    <form id='limitlessdrivefiles' style='display:none' method='post' enctype='multipart/form-data'  action='https://127.0.0.1:8080/upload'>
+      <input style='display:none' type='file' id='files' name='files[]' multiple />
+    </form>
 
   </body>
 </html>

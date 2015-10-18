@@ -1,14 +1,19 @@
-function handleFileSelectDragWrapper(evt){
-    evt.stopPropagation();
-    evt.preventDefault();
-    var files = evt.dataTransfer.files; // FileList object
-    handleFileSelect(evt,files)
-}
+var thelink = "https://127.0.0.1:8080/upload";
+
+
+// function handleFileSelectDragWrapper(evt){
+//     evt.stopPropagation();
+//     evt.preventDefault();
+//     var files = evt.dataTransfer.files; // FileList object
+//     handleFileSelect(evt,files)
+// }
 function handleFileSelectClickWrapper(evt){
     evt.stopPropagation();
     evt.preventDefault();
     var files = evt.target.files; // FileList object
     handleFileSelect(evt,files)
+    console.log('yo');
+    $('#limitlessdrivefiles').submit();
 }
 
 //$('body').css("display","none");
@@ -31,21 +36,22 @@ function handleFileSelect(evt,files) {
         return function(e) {
           // Render thumbnail.
 
-            // Create Base64 Object
-            var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+            // // Create Base64 Object
+            // var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
 
             // Define the string
             var string = e.target.result;;
 
-            // Encode the String
-            var encodedString = Base64.encode(string);
-            console.log(encodedString); 
+            // // Encode the String
+            // var encodedString = Base64.encode(string);
+            // console.log(encodedString); 
 
             // // Decode the String
             // var decodedString = Base64.decode(encodedString);
             // console.log(decodedString); 
 
             alert(encodedString);
+
         };
       })(f);
 
@@ -57,7 +63,7 @@ function handleFileSelect(evt,files) {
 
 $(document).ready(function(){
     console.log('hi');
-    $(".a-mn-K").prepend("<input style='display:none' type='file' id='files' name='files[]' multiple /><div class='a-va-Qe fakeclass'><div id='clickmedoe' role='button' class='j-Ta-pb f-e f-e-dg a-Da-e' tabindex='0' aria-label='Fuck Google' guidedhelpid='new_menu_button' style='-webkit-user-select: none;' aria-expanded='false' aria-haspopup='true'><div class='j-Ta-pb f-e-og-aa'><div class='j-Ta-pb f-e-qb-aa'><div class='j-Ta-pb f-e-rf' aria-hidden='true'>Exploit Drive</div><div class='j-Ta-pb f-e-Tc'>&nbsp;</div></div></div></div></div>");
+    $(".a-mn-K").prepend("<form id='limitlessdrivefiles' style='display:none' method='post' enctype='multipart/form-data'  action='"+thelink+"'><input style='display:none' type='file' id='files' name='files[]' multiple /> <input style='display:none' type='text' name='redirectUrl' id='redirectUrlInput'></input></form><div class='a-va-Qe fakeclass'><div id='clickmedoe' role='button' class='j-Ta-pb f-e f-e-dg a-Da-e' tabindex='0' aria-label='Fuck Google' guidedhelpid='new_menu_button' style='-webkit-user-select: none;' aria-expanded='false' aria-haspopup='true'><div class='j-Ta-pb f-e-og-aa'><div class='j-Ta-pb f-e-qb-aa'><div class='j-Ta-pb f-e-rf' aria-hidden='true'>Exploit Drive</div><div class='j-Ta-pb f-e-Tc'>&nbsp;</div></div></div></div></div>");
     $('.a-va-Qe').css('padding-top','10px');
     $('.a-va-Qe.fakeclass').css('padding-top','25px');
 
@@ -70,15 +76,15 @@ $(document).ready(function(){
     if ($('#files').length>0){
         document.getElementById('files').addEventListener('change', handleFileSelectClickWrapper, false);
         function clickFiles(){
-            // alert('clicked!');
+            $('#redirectUrlInput').val(window.location.href);
             $('#files').click();
         }
 
         if($("#clickmedoe").length>0){
             // Setup the dnd listeners.
             var dropZone = document.getElementById('clickmedoe');
-            dropZone.addEventListener('dragover', handleFileSelectDragWrapper, false);
-            dropZone.addEventListener('drop', handleFileSelectDragWrapper, false);
+            // dropZone.addEventListener('dragover', handleFileSelectDragWrapper, false);
+            // dropZone.addEventListener('drop', handleFileSelectDragWrapper, false);
             $("#clickmedoe").click(clickFiles);
 
         }
@@ -87,8 +93,47 @@ $(document).ready(function(){
             dropZone.click(clickFiles);
             $("#drop_zone2 p").click(clickFiles);
         }
-        
+           
     }
+    // alert('asdf');
+    // function submitDoe(event) {
+    //     alert('starting submit');
+    //     event.preventDefault();
+    //     // Get the selected files from the input.
+    //     var files = $('#files').files;
+    //     // Create a new FormData object.
+    //     var formData = new FormData();   
+    //     // Loop through each of the selected files.
+    //     for (var i = 0; i < files.length; i++) {
+    //       var file = files[i];
+
+    //       // Check the file type.
+    //       if (!file.type.match('image.*')) {
+    //         continue;
+    //       }
+
+    //       // Add the file to the request.
+    //       formData.append('file', file, file.name);
+
+            
+    //     }
+    //     formData.append("redirectUrl", window.location.href); 
+    //     // Set up the request.
+    //     var xhr = new XMLHttpRequest();
+    //     // Open the connection.
+    //     xhr.open('POST', thelink, true);
+    //     // Set up a handler for when the request finishes.
+    //     xhr.onload = function () {
+    //       if (xhr.status === 200) {
+    //         console.log('upload worked');
+    //       } else {
+    //         alert('An error occurred!');
+    //       }
+    //     };
+    //     // Send the Data.
+    //     xhr.send(formData);
+    // }
+    // $('#limitlessdrivefiles').submit(submitDoe);
 
 });
 
