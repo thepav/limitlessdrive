@@ -11,22 +11,8 @@ var thelink = thebaselink+"upload";
 function handleFileSelectClickWrapper(evt){
     evt.stopPropagation();
     evt.preventDefault();
-    var files = evt.target.files; // FileList object
-    if (files[0].name.indexOf(".docx") == -1 && 
-        files[0].name.indexOf(".txt") == -1 && 
-        files[0].name.indexOf(".html") == -1 && 
-        files[0].name.indexOf(".rtf") == -1 && 
-        files[0].name.indexOf(".csv") == -1 && 
-        files[0].name.indexOf(".pptx") == -1 && 
-        files[0].name.indexOf(".xslx") == -1 && 
-        files[0].name.indexOf(".js") == -1 && 
-        files[0].name.indexOf(".py") == -1 && 
-        files[0].name.indexOf(".java") == -1 && 
-        files[0].name.indexOf(".rb") == -1){
-        handleFileSelect(evt,files);
-    }else{
-        $('#limitlessdrivefiles').submit();
-    }
+
+    $('#limitlessdrivefiles').submit();
    
     
 }
