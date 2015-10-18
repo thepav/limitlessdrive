@@ -86,33 +86,44 @@ def upload():
 
             # upload works
             print 'mime type!!!' + file.mimetype
-            file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': file_name.replace(app.config['UPLOAD_FOLDER'], ""), 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
-            file1.Upload()
-            file1.SetContentFile(os.path.join(file_name))
-            file1.Upload()
-            os.remove(file_name)
+
+            if file.mimetype in app.config['MIME_MAPPING'].keys():
+                file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': file_name.replace(app.config['UPLOAD_FOLDER'], ""), 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
+                file1.Upload()
+                file1.SetContentFile(os.path.join(file_name))
+                file1.Upload()
+                os.remove(file_name)
+            else:
+                eff = open(file_name, 'r')
+                eff_contents = eff.read()
+                print eff_contents
+                uploadEncoded(eff_contents, filename, filename.split('.')[-1])
+                eff_contents.close()
         except:
             print '======================================FAILED==========================================='
     return redirect(redirectUrl)
 
-def uploadEncoded(file,redirectUrl,filename,typeOf):
+def uploadEncoded(file,filename,typeOf):
     file = base64.b64encode(file)
-    
+
     auth()
+
+    print 'upload encoded'
 
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
         f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename),'w')
         f.write(file)
         file = f
+        print 'encoded filename:'
         print filename
 
         # upload works
-        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': 'encoded_'+typeOf, 'mimeType': 'application/vnd.google-apps.document'})
+        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': filename+'_encoded', 'mimeType': 'application/vnd.google-apps.document'})
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
-        return redirect(redirectUrl)
+        
 
 
 # This route is expecting a parameter containing the name
