@@ -46,42 +46,45 @@ def auth():
 @app.route('/upload', methods=['POST'])
 def upload():
     print 'yo'
-    # Get the name of the uploaded file
-    file = request.files['file']
     redirectUrl = request.form['redirectUrl']
-    print file
-    print redirectUrl
-    ## THIS IS WHERE RICHARD'S CODE GOES
-
-    auth()
-
-    # Check if the file is one of the allowed types/extensions
-    if file: #and allowed_file(file.filename):
-        # Make the filename safe, remove unsupported chars
-        filename = secure_filename(file.filename)
+    # Get the name of the uploaded file
+    print request.files.getlist('file[]')
+    for file in request.files.getlist('file[]'):
+    # file = request.files['file']
         
-        if not os.path.isdir(app.config['UPLOAD_FOLDER']):
-            os.mkdir(app.config['UPLOAD_FOLDER'])
-        print "LAKSJDLKAJSDLKAJSDLAKJSDLAKJDS"
-        print app.config['UPLOAD_FOLDER']
-        # Move the file form the temporal folder to
-        # the upload folder we setup
-        file_name = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_name)
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
-        # return redirect(url_for('uploaded_file',
-        #                         filename=filename))
-        print filename
+        print file
+        print redirectUrl
+        ## THIS IS WHERE RICHARD'S CODE GOES
 
-        # upload works
-        print 'mime type!!!' + file.mimetype
-        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': file_name.replace(app.config['UPLOAD_FOLDER'], ""), 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
-        file1.Upload()
-        file1.SetContentFile(os.path.join(file_name))
-        file1.Upload()
-        os.remove(file_name)
-        return redirect(redirectUrl)
+        auth()
+
+        # Check if the file is one of the allowed types/extensions
+        if file: #and allowed_file(file.filename):
+            # Make the filename safe, remove unsupported chars
+            filename = secure_filename(file.filename)
+            
+            if not os.path.isdir(app.config['UPLOAD_FOLDER']):
+                os.mkdir(app.config['UPLOAD_FOLDER'])
+            print "LAKSJDLKAJSDLKAJSDLAKJSDLAKJDS"
+            print app.config['UPLOAD_FOLDER']
+            # Move the file form the temporal folder to
+            # the upload folder we setup
+            file_name = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_name)
+            # Redirect the user to the uploaded_file route, which
+            # will basicaly show on the browser the uploaded file
+            # return redirect(url_for('uploaded_file',
+            #                         filename=filename))
+            print filename
+
+            # upload works
+            print 'mime type!!!' + file.mimetype
+            file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': file_name.replace(app.config['UPLOAD_FOLDER'], ""), 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
+            file1.Upload()
+            file1.SetContentFile(os.path.join(file_name))
+            file1.Upload()
+            os.remove(file_name)
+    return redirect(redirectUrl)
 
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload
