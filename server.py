@@ -87,15 +87,8 @@ def upload():
             os.remove(file_name)
     return redirect(redirectUrl)
 
-@app.route('/uploadencoded', methods=['POST'])
-def uploadEncoded():
-    print 'yo'
-    # Get the name of the uploaded file
-    file = request.form['file']
-    redirectUrl = request.form['redirectUrl']
-    filename = request.form['filename']
-    typeOf = request.form['type']
-    #print file
+def uploadEncoded(file,redirectUrl,filename,typeOf):
+    file = base64.b64encode(file)
 
     auth()
 
