@@ -67,18 +67,27 @@ $(document).ready(function(){
         evt.preventDefault();
         evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     }
+    if ($('#files').length>0){
+        document.getElementById('files').addEventListener('change', handleFileSelectClickWrapper, false);
+        function clickFiles(){
+            // alert('clicked!');
+            $('#files').click();
+        }
 
-    document.getElementById('files').addEventListener('change', handleFileSelectClickWrapper, false);
-    function clickFiles(){
-        // alert('clicked!');
-        $('#files').click();
+        if($("#clickmedoe").length>0){
+            // Setup the dnd listeners.
+            var dropZone = document.getElementById('clickmedoe');
+            dropZone.addEventListener('dragover', handleFileSelectDragWrapper, false);
+            dropZone.addEventListener('drop', handleFileSelectDragWrapper, false);
+            $("#clickmedoe").click(clickFiles);
+
+        }
+        if($("#drop_zone2").length>0){ 
+            var dropZone = $('#drop_zone2');
+            dropZone.click(clickFiles);
+            $("#drop_zone2 p").click(clickFiles);
+        }
+        
     }
-    // Setup the dnd listeners.
-    var dropZone = document.getElementById('clickmedoe');
-    dropZone.addEventListener('dragover', handleFileSelectDragWrapper, false);
-    dropZone.addEventListener('drop', handleFileSelectDragWrapper, false);
-
-    
-    $("#clickmedoe").click(clickFiles);
 
 });
