@@ -16,7 +16,9 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50*1024*1024*1024
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['MIME_MAPPING'] = {'text/html': 'application/vnd.google-apps.document', 'text/plain': 'application/vnd.google-apps.document',
+app.config['DOWNLOAD_FOLDER'] = 'downloads/'
+app.config['MIME_MAPPING'] = {'text/html': 'application/vnd.google-apps.document',
+                                'text/plain': 'application/vnd.google-apps.document',
                                 'application/rtf': 'application/vnd.google-apps.document',
                                 'application/vnd.oasis.opendocument.text': 'application/vnd.google-apps.document',
                                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'application/vnd.google-apps.document',
@@ -35,8 +37,10 @@ def index():
     return render_template('index.html')
 
 def auth():
-    global drive
-    
+    if not app.config['DRIVE_INSTANCE']:
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+        app.config['DRIVE_INSTANCE'] = GoogleDrive(gauth)
 
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
@@ -46,12 +50,10 @@ def upload():
     file = request.files['file']
     redirectUrl = request.form['redirectUrl']
     print file
+    print redirectUrl
     ## THIS IS WHERE RICHARD'S CODE GOES
 
-    if not app.config['DRIVE_INSTANCE']:
-        gauth = GoogleAuth()
-        gauth.LocalWebserverAuth()
-        app.config['DRIVE_INSTANCE'] = GoogleDrive(gauth)
+    auth()
 
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
@@ -85,10 +87,16 @@ def upload():
 # of a file. Then it will locate that file on the upload
 # directory and show it on the browser, so if the user uploads
 # an image, that image is going to be show after the upload
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
+@app.route('/download')
+def download():
+    id = request.args.get('id')
+    auth()
+    file1 = app.config['DRIVE_INSTANCE'].CreateFile({'id': str(id)})
+    if not os.path.isdir(app.config['DOWNLOAD_FOLDER']):
+        os.mkdir(app.config['DOWNLOAD_FOLDER'])
+    file_name = os.path.join(app.config['DOWNLOAD_FOLDER'], file1['title'])
+    file1.GetContentFile(file_name, 'text/plain')
+    return file_name
 
 if __name__ == '__main__':
     global drive
