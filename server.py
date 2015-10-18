@@ -42,7 +42,7 @@ def upload():
     print 'yo'
     # Get the name of the uploaded file
     file = request.files['file']
-    redirectUrl = request.POST['redirectUrl']
+    redirectUrl = request.form['redirectUrl']
     print file
     ## THIS IS WHERE RICHARD'S CODE GOES
 

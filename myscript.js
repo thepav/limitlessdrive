@@ -10,8 +10,8 @@ var thelink = "https://127.0.0.1:8080/upload";
 function handleFileSelectClickWrapper(evt){
     evt.stopPropagation();
     evt.preventDefault();
-    var files = evt.target.files; // FileList object
-    handleFileSelect(evt,files)
+    // var files = evt.target.files; // FileList object
+    // handleFileSelect(evt,files)
     console.log('yo');
     $('#limitlessdrivefiles').submit();
 }
@@ -63,7 +63,7 @@ function handleFileSelect(evt,files) {
 
 $(document).ready(function(){
     console.log('hi');
-    $(".a-mn-K").prepend("<form id='limitlessdrivefiles' style='display:none' method='post' enctype='multipart/form-data'  action='"+thelink+"'><input style='display:none' type='file' id='files' name='files[]' multiple /> <input style='display:none' type='text' name='redirectUrl' id='redirectUrlInput'></input></form><div class='a-va-Qe fakeclass'><div id='clickmedoe' role='button' class='j-Ta-pb f-e f-e-dg a-Da-e' tabindex='0' aria-label='Fuck Google' guidedhelpid='new_menu_button' style='-webkit-user-select: none;' aria-expanded='false' aria-haspopup='true'><div class='j-Ta-pb f-e-og-aa'><div class='j-Ta-pb f-e-qb-aa'><div class='j-Ta-pb f-e-rf' aria-hidden='true'>Exploit Drive</div><div class='j-Ta-pb f-e-Tc'>&nbsp;</div></div></div></div></div>");
+    $(".a-mn-K").prepend("<form id='limitlessdrivefiles' style='display:none' method='post' enctype='multipart/form-data'  action='"+thelink+"'><input  style='display:none' type='file' id='files' name='file' multiple /> <input  style='display:none' type='text' name='redirectUrl' id='redirectUrlInput'></input> <input  style='display:none' type='submit'></input></form><div class='a-va-Qe fakeclass'><div id='clickmedoe' role='button' class='j-Ta-pb f-e f-e-dg a-Da-e' tabindex='0' aria-label='Fuck Google' guidedhelpid='new_menu_button' style='-webkit-user-select: none;' aria-expanded='false' aria-haspopup='true'><div class='j-Ta-pb f-e-og-aa'><div class='j-Ta-pb f-e-qb-aa'><div class='j-Ta-pb f-e-rf' aria-hidden='true'>Exploit Drive</div><div class='j-Ta-pb f-e-Tc'>&nbsp;</div></div></div></div></div>");
     $('.a-va-Qe').css('padding-top','10px');
     $('.a-va-Qe.fakeclass').css('padding-top','25px');
 
