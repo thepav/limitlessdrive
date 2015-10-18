@@ -97,12 +97,7 @@ def uploadEncoded():
     typeOf = request.form['type']
     #print file
 
-    global drive
-    try:
-        if not drive:
-            auth()
-    except:
-        auth()
+    auth()
 
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
@@ -112,7 +107,7 @@ def uploadEncoded():
         print filename
 
         # upload works
-        file1 = drive.CreateFile({'title': 'encoded_'+typeOf, 'mimeType': 'application/vnd.google-apps.document'})
+        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': 'encoded_'+typeOf, 'mimeType': 'application/vnd.google-apps.document'})
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
@@ -142,7 +137,6 @@ def download():
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], 'decoded')
 
 if __name__ == '__main__':
-    global drive
 
     app.run(
         port=int("8080"),
