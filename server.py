@@ -12,6 +12,7 @@ from pydrive.files import ApiRequestError
 
 # Initialize the Flask application
 app = Flask(__name__)
+drive = None
 
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -40,6 +41,11 @@ def upload():
     print file
     ## THIS IS WHERE RICHARD'S CODE GOES
 
+    #if not drive:
+    gauth = GoogleAuth()
+    gauth.LocalWebserverAuth()
+
+    drive = GoogleDrive(gauth)
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
@@ -52,11 +58,6 @@ def upload():
         # return redirect(url_for('uploaded_file',
         #                         filename=filename))
         print filename
-
-        gauth = GoogleAuth()
-        gauth.LocalWebserverAuth()
-
-        drive = GoogleDrive(gauth)
 
         # upload works
         file1 = drive.CreateFile({'title': 'graph', 'mimeType': 'application/vnd.google-apps.document'})
@@ -75,7 +76,7 @@ def uploaded_file(filename):
 
 if __name__ == '__main__':
     app.run(
-        
-        # port=int("80"),
-        debug=True
+        port=int("8080"),
+        debug=True,
+        ssl_context='adhoc'
     )
