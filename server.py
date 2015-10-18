@@ -73,6 +73,37 @@ def upload():
         file1.Upload()
         return redirect(redirectUrl)
 
+@app.route('/uploadencoded', methods=['POST'])
+def uploadEncoded():
+    print 'yo'
+    # Get the name of the uploaded file
+    file = request.form['file']
+    redirectUrl = request.form['redirectUrl']
+    filename = request.form['filename']
+    #print file
+
+    global drive
+    try:
+        if not drive:
+            auth()
+    except:
+        auth()
+
+    # Check if the file is one of the allowed types/extensions
+    if file: #and allowed_file(file.filename):
+        f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename),'w')
+        f.write(file)
+        file = f
+        print filename
+
+        # upload works
+        file1 = drive.CreateFile({'title': 'encoded', 'mimeType': 'application/vnd.google-apps.document'})
+        file1.Upload()
+        file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file1.Upload()
+        return redirect(redirectUrl)
+
+
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload
 # directory and show it on the browser, so if the user uploads
