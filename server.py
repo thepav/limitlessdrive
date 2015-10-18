@@ -18,7 +18,11 @@ app.config['MAX_CONTENT_LENGTH'] = 50*1024*1024*1024
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.config['DOWNLOAD_FOLDER'] = 'downloads/'
 app.config['MIME_MAPPING'] = {'text/html': 'application/vnd.google-apps.document',
+                                'application/octet-stream': 'application/vnd.google-apps.document',
                                 'text/plain': 'application/vnd.google-apps.document',
+                                'application/javascript': 'application/vnd.google-apps.document',
+                                'text/css': 'application/vnd.google-apps.document',
+                                'text/x-python': 'application/vnd.google-apps.document',
                                 'application/rtf': 'application/vnd.google-apps.document',
                                 'application/vnd.oasis.opendocument.text': 'application/vnd.google-apps.document',
                                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'application/vnd.google-apps.document',
@@ -52,14 +56,16 @@ def upload():
     for file in request.files.getlist('file[]'):
     # file = request.files['file']
         
-        print file
-        print redirectUrl
-        ## THIS IS WHERE RICHARD'S CODE GOES
+        try:
 
-        auth()
+            print file
+            print redirectUrl
+            ## THIS IS WHERE RICHARD'S CODE GOES
 
-        # Check if the file is one of the allowed types/extensions
-        if file: #and allowed_file(file.filename):
+            auth()
+
+            # Check if the file is one of the allowed types/extensions
+            # if file: #and allowed_file(file.filename):
             # Make the filename safe, remove unsupported chars
             filename = secure_filename(file.filename)
             
@@ -84,6 +90,8 @@ def upload():
             file1.SetContentFile(os.path.join(file_name))
             file1.Upload()
             os.remove(file_name)
+        except:
+            print '======================================FAILED==========================================='
     return redirect(redirectUrl)
 
 @app.route('/uploadencoded', methods=['POST'])
@@ -94,13 +102,8 @@ def uploadEncoded():
     redirectUrl = request.form['redirectUrl']
     filename = request.form['filename']
     #print file
-
-    global drive
-    try:
-        if not drive:
-            auth()
-    except:
-        auth()
+    
+    auth()
 
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
@@ -110,7 +113,7 @@ def uploadEncoded():
         print filename
 
         # upload works
-        file1 = drive.CreateFile({'title': 'encoded', 'mimeType': 'application/vnd.google-apps.document'})
+        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': 'encoded', 'mimeType': 'application/vnd.google-apps.document'})
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
@@ -133,7 +136,6 @@ def download():
     return file_name
 
 if __name__ == '__main__':
-    global drive
 
     app.run(
         port=int("8080"),
