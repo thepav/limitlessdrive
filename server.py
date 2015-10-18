@@ -13,15 +13,19 @@ from pydrive.files import ApiRequestError
 # Initialize the Flask application
 app = Flask(__name__)
 
+app.config['MAX_CONTENT_LENGTH'] = 50*1024*1024*1024
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-# These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
-# For a given file, return whether it's an allowed type or not
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+app.config['MIME_MAPPING'] = {'text/html': 'application/vnd.google-apps.document', 'text/plain': 'application/vnd.google-apps.document',
+                                'application/rtf': 'application/vnd.google-apps.document',
+                                'application/vnd.oasis.opendocument.text': 'application/vnd.google-apps.document',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'application/vnd.google-apps.document',
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'application/vnd.google-apps.spreadsheet',
+                                'application/x-vnd.oasis.opendocument.spreadsheet': 'application/vnd.google-apps.spreadsheet',
+                                'text/csv': 'application/vnd.google-apps.spreadsheet',
+                                'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'application/vnd.google-apps.presentation'
+                                }
+app.config['DRIVE_INSTANCE'] = None
 
 # This route will show a form to perform an AJAX request
 # jQuery is loaded to execute the request and update the
@@ -32,9 +36,7 @@ def index():
 
 def auth():
     global drive
-    gauth = GoogleAuth()
-    gauth.LocalWebserverAuth()
-    drive = GoogleDrive(gauth)
+    
 
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
@@ -46,12 +48,10 @@ def upload():
     print file
     ## THIS IS WHERE RICHARD'S CODE GOES
 
-    global drive
-    try:
-        if not drive:
-            auth()
-    except:
-        auth()
+    if not app.config['DRIVE_INSTANCE']:
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+        app.config['DRIVE_INSTANCE'] = GoogleDrive(gauth)
 
     # Check if the file is one of the allowed types/extensions
     if file: #and allowed_file(file.filename):
@@ -67,7 +67,8 @@ def upload():
         print filename
 
         # upload works
-        file1 = drive.CreateFile({'title': 'graph', 'mimeType': 'application/vnd.google-apps.document'})
+        print 'mime type!!!' + file.mimetype
+        file1 = app.config['DRIVE_INSTANCE'].CreateFile({'title': 'graph', 'mimeType': app.config['MIME_MAPPING'][file.mimetype]})
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
