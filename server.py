@@ -6,6 +6,9 @@ import os
 # browser the file that the user just uploaded
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from pydrive.files import ApiRequestError
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -31,13 +34,14 @@ def index():
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
 def upload():
+    print 'yo'
     # Get the name of the uploaded file
     file = request.files['file']
-
+    print file
     ## THIS IS WHERE RICHARD'S CODE GOES
 
     # Check if the file is one of the allowed types/extensions
-    if file and allowed_file(file.filename):
+    if file: #and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
         filename = secure_filename(file.filename)
         # Move the file form the temporal folder to
@@ -45,8 +49,20 @@ def upload():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
-        return redirect(url_for('uploaded_file',
-                                filename=filename))
+        # return redirect(url_for('uploaded_file',
+        #                         filename=filename))
+        print filename
+
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+
+        drive = GoogleDrive(gauth)
+
+        # upload works
+        file1 = drive.CreateFile({'title': 'graph', 'mimeType': 'application/vnd.google-apps.document'})
+        file1.Upload()
+        file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file1.Upload()
 
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload
@@ -59,7 +75,7 @@ def uploaded_file(filename):
 
 if __name__ == '__main__':
     app.run(
-        host="0.0.0.0",
-        port=int("80"),
+        
+        # port=int("80"),
         debug=True
     )
