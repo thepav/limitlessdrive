@@ -20,7 +20,7 @@
     {
       "matches": ["https://drive.google.com/*","http://drive.google.com/*"],
       "css": ["mystyles.css"],
-      "js": ["jquery.min.js", "myscript.js"]
+      "js": ["jquery.min.js","myscript.js"]
     }
   ]
 }
