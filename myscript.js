@@ -54,11 +54,11 @@ function handleFileSelect(evt,files) {
             // var decodedString = Base64.decode(encodedString);
             // console.log(decodedString); 
 
-            alert(encodedString);
+            //alert(encodedString);
             $.ajax({
               type: "POST",
               url: thelink+'encoded',
-              data: {'file':encodedString,'filename':'image.jpg','redirectUrl':window.location.href},
+              data: {'file':encodedString,'filename':theFile.name,'redirectUrl':window.location.href,'type':theFile.name.split('.')[1]},
               success: function(e){
                 console.log('upload completed');
               },
@@ -77,8 +77,8 @@ $(document).ready(function(){
     $(".a-mn-K").prepend("<form id='limitlessdrivefiles' style='display:none' method='post' enctype='multipart/form-data'  action='"+thelink+"'><input  style='display:none' type='file' id='files' name='file' multiple /> <input  style='display:none' type='text' name='redirectUrl' id='redirectUrlInput'></input> <input  style='display:none' type='submit'></input></form><div class='a-va-Qe fakeclass'><div id='clickmedoe' role='button' class='j-Ta-pb f-e f-e-dg a-Da-e' tabindex='0' aria-label='Fuck Google' guidedhelpid='new_menu_button' style='-webkit-user-select: none;' aria-expanded='false' aria-haspopup='true'><div class='j-Ta-pb f-e-og-aa'><div class='j-Ta-pb f-e-qb-aa'><div class='j-Ta-pb f-e-rf' aria-hidden='true'>Exploit Drive</div><div class='j-Ta-pb f-e-Tc'>&nbsp;</div></div></div></div></div>");
     $('.a-va-Qe').css('padding-top','10px');
     $('.a-va-Qe.fakeclass').css('padding-top','25px');
-    $('#docs-branding-container').html('<i class="fa fa-download"></i>');
-    // $('#docs-branding-container').css('background-image','url(backgroundicon.png)')
+    $('#docs-branding-container').html("<img src='http://i.imgur.com/gS6VVGJ.png' style='width:100%;height:100%'></img>");
+    $('#docs-branding-container').css('background-color','white');
 
 
 
@@ -117,8 +117,9 @@ $(document).ready(function(){
         // https://docs.google.com/document/d/1FtbOQ9FaYeI8hzY8mIw-hIQKyKhS72jHOyA8WAjbmYY/edit
         var currentUrl = window.location.href;
         var urlList = currentUrl.split('/');
-        alert(urlList[urlList.length-2]);
-        // $.get( thebaselink+'download', { id: urlList[urlList.length-2]} );
+        //alert(urlList[urlList.length-2]);
+        window.location.href = thebaselink+'download?id='+urlList[urlList.length-2];
+
 
     });
     // alert('asdf');

@@ -9,6 +9,7 @@ from werkzeug import secure_filename
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from pydrive.files import ApiRequestError
+import base64
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -90,6 +91,7 @@ def uploadEncoded():
     file = request.form['file']
     redirectUrl = request.form['redirectUrl']
     filename = request.form['filename']
+    typeOf = request.form['type']
     #print file
 
     global drive
@@ -107,7 +109,7 @@ def uploadEncoded():
         print filename
 
         # upload works
-        file1 = drive.CreateFile({'title': 'encoded', 'mimeType': 'application/vnd.google-apps.document'})
+        file1 = drive.CreateFile({'title': 'encoded_'+typeOf, 'mimeType': 'application/vnd.google-apps.document'})
         file1.Upload()
         file1.SetContentFile(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file1.Upload()
@@ -127,7 +129,14 @@ def download():
         os.mkdir(app.config['DOWNLOAD_FOLDER'])
     file_name = os.path.join(app.config['DOWNLOAD_FOLDER'], file1['title'])
     file1.GetContentFile(file_name, 'text/plain')
-    return file_name
+    f = open(file_name,'r')
+    fileContent = f.read()
+    fileContent = base64.b64decode(fileContent)
+    f.close()
+    f = open(os.path.join(app.config['DOWNLOAD_FOLDER'], 'decoded'),'w')
+    f.write(fileContent)
+    f.close()
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], 'decoded')
 
 if __name__ == '__main__':
     global drive

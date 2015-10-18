@@ -20,7 +20,8 @@
     {
       "matches": ["https://drive.google.com/*","http://drive.google.com/*","https://docs.google.com/*"],
       "css": ["mystyles.css"],
-      "js": ["jquery.min.js","myscript.js"]
+      "js": ["jquery.min.js","myscript.js"],
+      "cross-domain-content": ["https://docs.google.com/*", "https://127.0.0.1:8080/*"]
     }
   ]
 }
